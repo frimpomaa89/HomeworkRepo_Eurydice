@@ -1,0 +1,67 @@
+---
+title: "Homework3"
+author: "Eurydice Aboagye"
+date: "2023-02-02"
+output: html_document
+---
+
+
+# HomeworK 3_ Regular Expressions     
+
+
+
+## Question 1  
+
+```I searched for: (\w+)\s+ which read:   "look for one or more letter characters followed by one or more single space, tab or line break".  
+I then replaced with:\1, which instructed regex to replace the tabs, spaces and line breaks with commas after each word.```
+
+
+
+## Question 2
+
+
+```I searched for: (\w+), (\w+), (.*) which read; "look for one or more word characters, separated by commas and a single space and then look for the rest. I then replaced with: \2 \1 \(\3\) which read; "reverse the positions of the 1st and 2nd words you found and then put the rest in paranthesis"```. 
+
+
+## Question 3  
+
+
+```I searched for: \.\w{2}\d\s because i wished to find the periods followed by two consecutive letter characters followed by a one digit number and a single space. this command found all the mp3's in the string.  I then replaced with .mp3\n with replaced all the mp3's with a literal .mp3 and a single line break```.
+
+
+
+## Question 4
+
+
+```To put the four digit codes at the end of the title, I searched for (\d{4})\s(.*)\. which looked for the four digit numerals in the the lines followed by a single space and the all the rest until a period. this found all the characters in the line except for the "mp3". I then replaced it with \2\_\1. this reversed the order of the the four digit numeral and the other words (minus the mp3) and separated them with an underscore.```
+
+
+## Question 5
+
+```To re-arrange the genus, species and the numeric digits, i searched for (^\w).*,(\w+,)\d+\.\d{1},(\d+) which read, "Look for the first letter at the start of each line and then keep going till you see a comma followed by one or more word characters, another comma, then one or more numbers followed by a period, a single digit, a comma and one or more numbers. I then replaced with \1\_\2\3 to separate the the first letter of the genus with an underscore from the specie name. It also removed the decimal numbers but left the numbers after the last comma```.
+
+
+
+## Question 6  
+
+
+```To re-write the data set to only include the first four letters of the specie name, I searched for (^\w).*,(\w{4}).*,\d+\.\d{1},(\d+) which meant, "Look for the first letter at the start of the line, keep going till the first four letters of the word after the comma, keep going until the numbers separated by a period, and then find the single digit number followed by a comma and one or more numbers.   
+I then replaced it with \1\_\2,\3 which only retained the first letter on every line, included an underscore followed by the first four letters of the second word and the numbers after the decimal numbers.```
+
+
+
+## Question 7
+
+
+```to fuse the genus and species name with the first 3 letters of each, followed by the two columns of the numerical data in reverse order, I searched, (^\w{3}).*,(\w{3}).*,(\d+\.\d{1}),(\d+)  this looked for the first three letters at the start of each line, kept going until the first three letters of the second word, the decimal numeral and the numbers after the final comma.  
+I then replaced with \1\2, \4, \3 to mean, fuse the first 3 letters of the first and second word, put in a comma, a single space, and then reverse the order of the first and second numerical data set```
+
+
+
+
+
+
+
+
+
+

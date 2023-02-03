@@ -11,9 +11,9 @@
 
 <meta name="author" content="Eurydice Aboagye" />
 
-<meta name="date" content="2023-01-25" />
+<meta name="date" content="2023-02-02" />
 
-<title>HomeworkRepo</title>
+<title>Homework3</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,33 +350,43 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">HomeworkRepo</h1>
+<h1 class="title toc-ignore">Homework3</h1>
 <h4 class="author">Eurydice Aboagye</h4>
-<h4 class="date">2023-01-25</h4>
+<h4 class="date">2023-02-02</h4>
 
 </div>
 
 
-<p>this is homework 2 starting to make sense still confusing though</p>
-<p><a href="testdrive1.html">new page</a></p>
-<p><a href="Homework3.html">new page</a></p>
-<div id="r-markdown" class="section level3">
-<h3>R Markdown</h3>
-<p>This is an R Markdown document. Markdown is a simple formatting
-syntax for authoring HTML, PDF, and MS Word documents. For more details
-on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be
-generated that includes both content as well as the output of any
-embedded R code chunks within the document. You can embed an R code
-chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="homework-3_-regular-expressions" class="section level1">
+<h1>HomeworK 3_ Regular Expressions</h1>
+<div id="question-1" class="section level2">
+<h2>Question 1</h2>
+<p><code>I searched for: (\w+)\s+ which read:   &quot;look for one or more letter characters followed by one or more single space, tab or line break&quot;.   I then replaced with:\1, which instructed regex to replace the tabs, spaces and line breaks with commas after each word.</code></p>
+</div>
+<div id="question-2" class="section level2">
+<h2>Question 2</h2>
+<p><code>I searched for: (\w+), (\w+), (.*) which read; &quot;look for one or more word characters, separated by commas and a single space and then look for the rest. I then replaced with: \2 \1 \(\3\) which read; &quot;reverse the positions of the 1st and 2nd words you found and then put the rest in paranthesis&quot;</code>.</p>
+</div>
+<div id="question-3" class="section level2">
+<h2>Question 3</h2>
+<p><code>I searched for: \.\w{2}\d\s because i wished to find the periods followed by two consecutive letter characters followed by a one digit number and a single space. this command found all the mp3&#39;s in the string.  I then replaced with .mp3\n with replaced all the mp3&#39;s with a literal .mp3 and a single line break</code>.</p>
+</div>
+<div id="question-4" class="section level2">
+<h2>Question 4</h2>
+<p><code>To put the four digit codes at the end of the title, I searched for (\d{4})\s(.*)\. which looked for the four digit numerals in the the lines followed by a single space and the all the rest until a period. this found all the characters in the line except for the &quot;mp3&quot;. I then replaced it with \2\_\1. this reversed the order of the the four digit numeral and the other words (minus the mp3) and separated them with an underscore.</code></p>
+</div>
+<div id="question-5" class="section level2">
+<h2>Question 5</h2>
+<p><code>To re-arrange the genus, species and the numeric digits, i searched for (^\w).*,(\w+,)\d+\.\d{1},(\d+) which read, &quot;Look for the first letter at the start of each line and then keep going till you see a comma followed by one or more word characters, another comma, then one or more numbers followed by a period, a single digit, a comma and one or more numbers. I then replaced with \1\_\2\3 to separate the the first letter of the genus with an underscore from the specie name. It also removed the decimal numbers but left the numbers after the last comma</code>.</p>
+</div>
+<div id="question-6" class="section level2">
+<h2>Question 6</h2>
+<p><code>To re-write the data set to only include the first four letters of the specie name, I searched for (^\w).*,(\w{4}).*,\d+\.\d{1},(\d+) which meant, &quot;Look for the first letter at the start of the line, keep going till the first four letters of the word after the comma, keep going until the numbers separated by a period, and then find the single digit number followed by a comma and one or more numbers.    I then replaced it with \1\_\2,\3 which only retained the first letter on every line, included an underscore followed by the first four letters of the second word and the numbers after the decimal numbers.</code></p>
+</div>
+<div id="question-7" class="section level2">
+<h2>Question 7</h2>
+<p><code>to fuse the genus and species name with the first 3 letters of each, followed by the two columns of the numerical data in reverse order, I searched, (^\w{3}).*,(\w{3}).*,(\d+\.\d{1}),(\d+)  this looked for the first three letters at the start of each line, kept going until the first three letters of the second word, the decimal numeral and the numbers after the final comma.   I then replaced with \1\2, \4, \3 to mean, fuse the first 3 letters of the first and second word, put in a comma, a single space, and then reverse the order of the first and second numerical data set</code></p>
+</div>
 </div>
 
 
