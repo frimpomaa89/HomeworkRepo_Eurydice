@@ -11,9 +11,9 @@
 
 <meta name="author" content="Eurydice Aboagye" />
 
-<meta name="date" content="2023-01-25" />
+<meta name="date" content="2023-02-10" />
 
-<title>HomeworkRepo</title>
+<title>Homework #4_Atomic Vectors</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,19 +350,117 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">HomeworkRepo</h1>
+<h1 class="title toc-ignore">Homework #4_Atomic Vectors</h1>
 <h4 class="author">Eurydice Aboagye</h4>
-<h4 class="date">2023-01-25</h4>
+<h4 class="date">2023-02-10</h4>
 
 </div>
 
 
-<p>##<strong>Below are Links to my Comp Bio Homework</strong></p>
-<ol style="list-style-type: decimal">
-<li><p><a href="testdrive1.html">new page</a></p></li>
-<li><p><a href="Homework3.html">new page</a></p></li>
-<li><p><a href="Homework4.rmd">new page</a></p></li>
-</ol>
+<div id="question-1" class="section level3">
+<h3><strong>Question 1</strong></h3>
+<p>Suppose x = 1.1, a = 2.2, and b = 3.3. Assign each expression to the
+value of the variable z and print the value stored in z.</p>
+<pre class="r"><code>x&lt;- 1.1     #I first assigned the variables to each respective value
+a&lt;- 2.2
+b&lt;- 3.3
+z&lt;- c(x,a,b)   ##I then concatenated all three values in to Z and then proceded with the math operations
+print(z)</code></pre>
+<pre><code>## [1] 1.1 2.2 3.3</code></pre>
+<pre class="r"><code>x^a^b</code></pre>
+<pre><code>## [1] 3.61714</code></pre>
+<pre class="r"><code>(x^a)^b</code></pre>
+<pre><code>## [1] 1.997611</code></pre>
+<pre class="r"><code>3*x^3 + 2*x^2 + 1</code></pre>
+<pre><code>## [1] 7.413</code></pre>
+</div>
+<div id="question-2" class="section level3">
+<h3><strong>Question 2</strong></h3>
+<p>Using the rep and seq functions, create the following vectors:</p>
+<p>(1,2,3,4,5,6,7,8,7,6,5,4,3,2,1)</p>
+<p>(1,2,2,3,3,3,4,4,4,4,5,5,5,5,5)..</p>
+<p>(5,4,4,3,3,3,2,2,2,2,1,1,1,1,1)..</p>
+<pre class="r"><code>z2&lt;-c(seq(from=1, to=8),seq(from=7,to=1))
+# I first generated a series of numbers from 1 to 8 with the seq function and then used the same function to generate another sequence from 7 to 1 and concatenated them into a new variable i called Z2
+print(z2)</code></pre>
+<pre><code>##  [1] 1 2 3 4 5 6 7 8 7 6 5 4 3 2 1</code></pre>
+<pre class="r"><code>z3&lt;-c(seq(from=1, to=5))
+print(z3)</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<pre class="r"><code># I first created a variable z3 with numbers 1 to 5 and then used the rep function to repeat each element by the order in which it appeared. I did this by using the length of z3 as the numbers of reps
+z4&lt;-c(rep(z3, times=z3))
+
+Z5&lt;-c(seq(from=5, to=1))
+Z6&lt;-c(rep(Z5, times=z3))
+#this was similar to tha last question, only this time i asked R to replicate it by the order of Z3 which read from 1 to 5 instead on 5 to 1(z5).
+print(Z6)</code></pre>
+<pre><code>##  [1] 5 4 4 3 3 3 2 2 2 2 1 1 1 1 1</code></pre>
+</div>
+<div id="question-3" class="section level3">
+<h3><strong>Question 3</strong></h3>
+<p>Create a vector of two random uniform numbers. In a spatial map,
+these can be interpreted as x and y coordinates that give the location
+of an individual (such as a marked forest tree in a plot that has been
+mapped). Using one of R’s inverse trigonometry functions (asin(),
+acos(), or atan()), convert these numbers into polar coordinates</p>
+<pre class="r"><code>set.seed(1)
+r&lt;-c(runif(2, min=0, max=100))# I used the runif function to create the random uniform numbers between 0 and 100
+print(r)</code></pre>
+<pre><code>## [1] 26.55087 37.21239</code></pre>
+<pre class="r"><code>x&lt;-r[1]
+y&lt;-r[2]# I then assigned them as x and y coordinates using their positioning in the vector r.
+print(r)</code></pre>
+<pre><code>## [1] 26.55087 37.21239</code></pre>
+<pre class="r"><code>p&lt;-c(sqrt(x^2+y^2), atan(y)+pi)
+print(p)# I then applied the formular to convert them into polar coordinates.</code></pre>
+<pre><code>## [1] 45.713351  4.685523</code></pre>
+</div>
+<div id="question4" class="section level3">
+<h3><strong>Question4</strong></h3>
+<p>Create a vector queue &lt;- c(“sheep”, “fox”, “owl”, “ant”) where
+queue represents the animals that are lined up to enter Noah’s Ark, with
+the sheep at the front of the line. Using R expressions, update queue
+as:</p>
+<p>the serpent arrives and gets in line;<br />
+the sheep enters the ark;<br />
+the donkey arrives and talks his way to the front of the line; the
+serpent gets impatient and leaves; the owl gets bored and leaves; the
+aphid arrives and the ant invites him to cut in line. Finally, determine
+the position of the aphid in the line.</p>
+<pre class="r"><code>queue&lt;-c(&quot;sheep&quot;,&quot;fox&quot;,&quot;owl&quot;, &quot;ant&quot;)
+print(queue)</code></pre>
+<pre><code>## [1] &quot;sheep&quot; &quot;fox&quot;   &quot;owl&quot;   &quot;ant&quot;</code></pre>
+<pre class="r"><code>queue2&lt;-c(queue, &quot;serpent&quot;) # I added serpent to the end of the queue
+print(queue2)</code></pre>
+<pre><code>## [1] &quot;sheep&quot;   &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>queue3&lt;-c(queue2[!queue2 ==&quot;sheep&quot;]) #I removed sheep from the vector by using ! to negate the element i wished to remove
+print(queue3)</code></pre>
+<pre><code>## [1] &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>queue4&lt;-c(&quot;donkey&quot;, queue3)# in order to position the new variable donkey in the vector, i created a new variable and placed it before the new variable
+print(queue4)</code></pre>
+<pre><code>## [1] &quot;donkey&quot;  &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>queue5&lt;-c(queue4[!queue4 ==&quot;serpent&quot;])# I removed the serpent and the owl using the same code i used to remove sheep
+print(queue5)</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;owl&quot;    &quot;ant&quot;</code></pre>
+<pre class="r"><code>queue6&lt;-c(queue5[!queue5 ==&quot;owl&quot;])
+print(queue6)</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;ant&quot;</code></pre>
+<pre class="r"><code>queue7&lt;-c(append(queue6,&quot;aphid&quot;, after=2)) # i used the append function to introduce the new element aphid and specified its position in the queue by using the after argument
+queue7</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;aphid&quot;  &quot;ant&quot;</code></pre>
+<pre class="r"><code>which(queue7 == &quot;aphid&quot;) #i used the which function to determine the position of the aphid in the queue.</code></pre>
+<pre><code>## [1] 3</code></pre>
+</div>
+<div id="question-5" class="section level3">
+<h3><strong>Question 5</strong></h3>
+<p>Use R to create a vector of all of the integers from 1 to 100 that
+are not divisible by 2, 3, or 7</p>
+<pre class="r"><code>a&lt;- c(seq(1:100))
+b&lt;- c(which(!a%%2 ==0 &amp; !a%%3 ==0 &amp; !a%%7 ==0))# I first created sequence of numbers from 1 to 100 and then used the which function to specify which numbers within the sequence could not be included. I also found out about the importance of the &#39;&amp;&#39; argument which made sure that the new vector would only contain numbers that met all my stated criteria.
+b</code></pre>
+<pre><code>##  [1]  1  5 11 13 17 19 23 25 29 31 37 41 43 47 53 55 59 61 65 67 71 73 79 83 85
+## [26] 89 95 97</code></pre>
+</div>
 
 
 

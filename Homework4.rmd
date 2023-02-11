@@ -1,0 +1,124 @@
+---
+title: "Homework #4_Atomic Vectors"
+author: "Eurydice Aboagye"
+date: "2023-02-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### **Question 1**  
+
+  
+Suppose x = 1.1, a = 2.2, and b = 3.3. Assign each expression to the value of the variable z and print the value stored in z.
+
+```{r, by-Q1} 
+x<- 1.1     #I first assigned the variables to each respective value
+a<- 2.2
+b<- 3.3
+z<- c(x,a,b)   ##I then concatenated all three values in to Z and then proceded with the math operations
+print(z)
+x^a^b
+(x^a)^b
+3*x^3 + 2*x^2 + 1
+```
+
+
+
+### **Question 2**
+
+Using the rep and seq functions, create the following vectors:
+
+(1,2,3,4,5,6,7,8,7,6,5,4,3,2,1)  
+
+(1,2,2,3,3,3,4,4,4,4,5,5,5,5,5)..
+
+(5,4,4,3,3,3,2,2,2,2,1,1,1,1,1)..
+
+
+```{r, by-Q2}
+z2<-c(seq(from=1, to=8),seq(from=7,to=1))
+# I first generated a series of numbers from 1 to 8 with the seq function and then used the same function to generate another sequence from 7 to 1 and concatenated them into a new variable i called Z2
+print(z2)
+
+z3<-c(seq(from=1, to=5))
+print(z3)
+# I first created a variable z3 with numbers 1 to 5 and then used the rep function to repeat each element by the order in which it appeared. I did this by using the length of z3 as the numbers of reps
+z4<-c(rep(z3, times=z3))
+
+Z5<-c(seq(from=5, to=1))
+Z6<-c(rep(Z5, times=z3))
+#this was similar to tha last question, only this time i asked R to replicate it by the order of Z3 which read from 1 to 5 instead on 5 to 1(z5).
+print(Z6)
+```
+
+
+
+### **Question 3**  
+
+Create a vector of two random uniform numbers. In a spatial map, these can be interpreted as x and y coordinates that give the location of an individual (such as a marked forest tree in a plot that has been mapped). Using one of R’s inverse trigonometry functions (asin(), acos(), or atan()), convert these numbers into polar coordinates 
+
+
+```{r, by-Q3}
+set.seed(1)
+r<-c(runif(2, min=0, max=100))# I used the runif function to create the random uniform numbers between 0 and 100
+print(r)
+x<-r[1]
+y<-r[2]# I then assigned them as x and y coordinates using their positioning in the vector r.
+print(r)
+p<-c(sqrt(x^2+y^2), atan(y)+pi)
+print(p)# I then applied the formular to convert them into polar coordinates.
+```
+
+
+
+### **Question4**  
+Create a vector queue <- c("sheep", "fox", "owl", "ant") where queue represents the animals that are lined up to enter Noah’s Ark, with the sheep at the front of the line. Using R expressions, update queue as:
+
+the serpent arrives and gets in line;  
+the sheep enters the ark;  
+the donkey arrives and talks his way to the front of the line;
+the serpent gets impatient and leaves;
+the owl gets bored and leaves;
+the aphid arrives and the ant invites him to cut in line.
+Finally, determine the position of the aphid in the line.
+
+
+
+```{r, by-Q4}
+queue<-c("sheep","fox","owl", "ant")
+print(queue)
+queue2<-c(queue, "serpent") # I added serpent to the end of the queue
+print(queue2)
+queue3<-c(queue2[!queue2 =="sheep"]) #I removed sheep from the vector by using ! to negate the element i wished to remove
+print(queue3)
+queue4<-c("donkey", queue3)# in order to position the new variable donkey in the vector, i created a new variable and placed it before the new variable
+print(queue4)
+queue5<-c(queue4[!queue4 =="serpent"])# I removed the serpent and the owl using the same code i used to remove sheep
+print(queue5)
+queue6<-c(queue5[!queue5 =="owl"])
+print(queue6)
+queue7<-c(append(queue6,"aphid", after=2)) # i used the append function to introduce the new element aphid and specified its position in the queue by using the after argument
+queue7
+which(queue7 == "aphid") #i used the which function to determine the position of the aphid in the queue.
+```
+
+
+### **Question 5**  
+Use R to create a vector of all of the integers from 1 to 100 that are not divisible by 2, 3, or 7
+
+```{r, b-Q5}
+a<- c(seq(1:100))
+b<- c(which(!a%%2 ==0 & !a%%3 ==0 & !a%%7 ==0))# I first created sequence of numbers from 1 to 100 and then used the which function to specify which numbers within the sequence could not be included. I also found out about the importance of the '&' argument which made sure that the new vector would only contain numbers that met all my stated criteria.
+b
+```
+
+
+
+
+
+
+
