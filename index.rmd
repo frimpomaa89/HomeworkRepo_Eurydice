@@ -19,7 +19,7 @@ output: html_document
 
 4. [new page](Homework5.html)
 
-
+5. [new page](Homework6.html)
 
 
 ```{r setup, include=FALSE}

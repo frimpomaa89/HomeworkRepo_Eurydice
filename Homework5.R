@@ -90,7 +90,16 @@ My_frame[sample(nrow(My_frame),4), 1]<-NA
 My_frame[!complete.cases(My_frame[ ,c(1)]),] 
 
 
+
 My_frame2<-data.frame(my_unis, sort(my_letters2, decreasing = FALSE))
 My_frame2
 
-mean(My_frame2[ ,1])
+mean(My_frame2$my_unis)
+colMeans (My_frame2[,1], na.rm =TRUE) 
+x <- cbind(x1 = 3, x2 = c(4:1, 2:5))
+x[3, ] <- NA; x[4, 2] <- NA
+x
+str(My_frame2$my_unis)
+colMeans(x, na.rm=TRUE)
+is.array(My_frame2$my_unis)
+
