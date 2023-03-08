@@ -9,19 +9,23 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+### Matrices, Lists and Data Frames
 
-###Question 1  
+### Question 1  
 Assign to the variable n_dims a single random integer between 3 and 10.
 
 ```{r} 
 a<-c(seq(from=3, to=10))
 print(a)
 
+
 n_dims <-sample(x=a, size=1)
 
 print(n_dims)
 
-b<- c(seq(from=1, to=(n_dims)^2)) #Create a vector of consecutive integers from 1 to n_dims2
+b<- c(seq(from=1, to=(n_dims)^2))
+
+#Create a vector of consecutive integers from 1 to n_dims2
 
 print(b)
 #Use the sample function to randomly reshuffle these values.
@@ -52,7 +56,9 @@ typeof(m3$vectors)
 
 
 
-###Question 2  
+### Question 2  
+create a list with the ff named elements
+
 ```{r} 
 my_matrix<-(matrix(data=runif(16, min=1, max=20),nrow=4, ncol=4))
 my_matrix #a 4x4 matrix filled with random uniform values
@@ -89,7 +95,10 @@ print(new_vec)
 
 
 
-###Question 3  
+### Question 3  
+
+Create a data frame with the two variables (= columns) and 26 cases (= rows) below:
+
 
 ```{r}
 

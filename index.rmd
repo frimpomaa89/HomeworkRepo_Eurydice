@@ -13,14 +13,13 @@ output: html_document
 1. [new page](testdrive1.html)   
 
 
-2. [new page](Homework3.html)  
+2. [new page](Homework3.html)  Homework 3: R markdown
 
-3. [new page](Homework4.html)
+3. [new page](Homework4.html)  Homework 4: Atomic Vectors
 
-4. [new page](Homework5.html)
+4. [new page](Homework5.html)  Homework 5: Matrices, Lists and Data frames
 
-5. [new page](Homework6.html)
-
+5. [new page](Homework6.html)  Homework 6: Tidyverse, dplyr
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
