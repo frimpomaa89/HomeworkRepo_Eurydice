@@ -1,0 +1,155 @@
+---
+title: "Homework7"
+author: "Eurydice Aboagye"
+date: "2023-03-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Simulating and Fitting Data Distributions  
+
+
+
+```{r}
+z <- read.table("BiofilmCounts.csv",header=TRUE,sep=",") ##BiofilmCounts is my own generated data
+z <- z[complete.cases(z), ]
+str(z)
+summary(z)
+
+```
+
+```{r}
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+```
+
+```{r}
+p1 <- ggplot(data=z, aes(x=logcfu, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1) # a histogram on that shows the distribution of my primary outcome, log cfu/coupon
+```
+
+```{r}
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1) #Empirical density curve
+```
+
+```{r}
+normPars <- fitdistr(z$logcfu,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] ## fitting a normal distribution to my data and grabing the maximum likelihood estimators of the two parameters of the normal: The mean and the variance
+
+
+```
+That generated a list of 5:"n", "loglik", "estimate", "mean" and "sd", all pf which are the parameters of the normal distribution 
+
+I then passed these parameters to the stat_function as ff:
+
+```{r}
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$logcfu),len=length(z$logcfu))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$logcfu), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+ 
+ #this generated a probability density for the normal distribution
+```
+
+
+I then added in the curve for the exponential as ff:
+
+```{r}
+expoPars <- fitdistr(z$logcfu,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$logcfu), args = list(rate=rateML))
+ p1 + stat + stat2
+ 
+```
+
+I then plotted the uniform probability density which did not require the fitdisr function, because the max likelihood estimators in this case, are just the min and max of the data
+
+
+```{r}
+stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$logcfu), args = list(min=min(z$logcfu), max=max(z$logcfu)))
+ p1 + stat + stat2 + stat3
+
+```
+
+I then plotted the  gamma probability density:
+
+```{r}
+gammaPars <- fitdistr(z$logcfu,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$logcfu), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+
+```
+
+The beta probability was shown on its own plot, because the original data was re-scaled to values between 0 and 1.
+
+```{r}
+pSpecial <- ggplot(data=z, aes(x=logcfu/(max(logcfu + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$logcfu/max(z$logcfu + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$logcfu), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+
+```
+
+The gamma probability density appears to be my best fit.
+
+I then simulated a new data set, with the same length as the log cfu vector 
+
+
+```{r}
+y <- rgamma(n=length(z$logcfu), shape =shapeML, rate=rateML)
+
+y <- data.frame(1:length(z$logcfu),y)
+names(y) <- list("ID", "new_cfu")
+str(y)
+summary(y)
+psim<- ggplot(data=y, aes(x=new_cfu),  y=..density..) + 
+  geom_histogram(color="grey60", fill="cornsilk", size=0.2)
+print(psim)
+
+##now for the gamma distribution curve...
+
+## first, i determine the parameters..
+
+simgammaPars<-fitdistr(y$new_cfu, "gamma")
+print(simgammaPars)
+ psim2<- psim + geom_density(linetype="dotted",size=0.75)
+print(psim2)
+
+
+```
+
+Now comparing to the original data set....
+
+```{r}
+
+p1 <- ggplot(data=z, aes(x=logcfu, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+
+p1 <-p1 + geom_density(linetype="dotted",size=0.75)
+
+print (p1)
+```
+
+the simulated data appears comparable to the original data

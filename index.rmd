@@ -21,6 +21,8 @@ output: html_document
 
 5. [new page](Homework6.html)  Homework 6: Tidyverse, dplyr
 
+6. [new page](Homework7.html)  Homework 7: Simulating and fitting data distributions
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
