@@ -1,0 +1,243 @@
+---
+title: "Creating Fake Data Sets to Explore Hypothesis"
+author: "Eurydice Aboagye"
+date: "2023-03-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question One  
+Think about an ongoing study in your lab (or a paper you have read in a different class), and decide on a pattern that you might expect in your experiment if a specific hypothesis were true.
+
+
+*I am working on a Listeria biofilm study where i grew six Listeria isolates on stainless steel coupons and treated them with sanitizers at different concentrations. My null hypothesis is that there is no differnce in the effect of the sanitizers at different concentrations (0ppm, 50ppm, 100ppm and 200ppm)*
+
+### Question Two  
+
+To start simply, assume that the data in each of your treatment groups follow a normal distribution. Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. You may need to consult some previous literature and/or an expert in the field to come up with these numbers.
+
+``` {r}
+
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+
+z <- read.table("BiofilmCounts.csv",header=TRUE,sep=",")
+z <- z[complete.cases(z), ]
+str(z$QAC_conc)
+summary(z)
+
+
+z1<-select(z, Treatment, SanitizerType, SanitizerConc, logcfu)
+
+
+z1 %>%
+  group_by(SanitizerConc)%>%
+  summarise(AverageCfu=mean(logcfu), variance=var(logcfu), n=n()) ->z2
+print(z2)
+
+```
+
+
+### Question Three  
+Using the methods we have covered in class, write code to create a random data set that has these attributes. Organize these data into a data frame with the appropriate structure.
+
+```{r}
+isolates<-rep(c("A","B","C","D","E"),each=10)
+control<-rnorm(50, mean = 7.47, sd=0.716)
+low<-rnorm(50, mean=6.86, sd=1.50)
+medium<-rnorm(50, mean=6.91, sd=1.31)
+high<- rnorm(50, mean=6.59, sd=1.92)
+
+dframe<- data.frame(isolates, control, low, medium, high)
+
+head(dframe)
+dframe %>%
+  pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T) -> dframe2
+
+head(dframe2)
+  
+ 
+```
+
+### Question Four  
+
+Now write code to analyze the data (probably as an ANOVA or regression analysis, but possibly as a logistic regression or contingency table analysis. Write code to generate a useful graph of the data.
+
+```{r}
+one.way <- aov(logcfu ~ SanitizerConc, data=dframe2) #one way anova with logcfu as the outcome variable
+summary(one.way) # null hypothesis is false.
+
+plot1<-ggplot(dframe2) +
+  geom_bar(aes(x = isolates, y = logcfu, fill = SanitizerConc ), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(plot1)
+
+#I ran a posthoc analyses to determine significance within groups
+
+TukeyHSD(one.way)
+
+```
+
+### Question Five  
+Try running your analysis multiple times to get a feeling for how variable the results are with the same parameters, but different sets of random numbers.
+
+```{r}
+isolates<-rep(c("A","B","C","D","E"),each=10)
+control<-rnorm(50, mean = 7.47, sd=0.716)
+low<-rnorm(50, mean=6.86, sd=1.50)
+medium<-rnorm(50, mean=6.91, sd=1.31)
+high<- rnorm(50, mean=6.59, sd=1.92)
+
+dframe1<- data.frame(isolates, control, low, medium, high)
+
+head(dframe1)
+dframe1 %>%
+  pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T) -> dframe2
+
+head(dframe2)
+
+one.way <- aov(logcfu ~ SanitizerConc, data=dframe2)
+summary(one.way)#This time i reject the null hypothesis because p_value was significant
+
+plot2<-ggplot(dframe2) +
+  geom_bar(aes(x = isolates, y = logcfu, fill = SanitizerConc ), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(plot2)
+
+#I ran a posthoc analyses to determine significance within groups
+
+TukeyHSD(one.way)
+
+```
+
+
+***Running my analysis one more time with different random numbers***
+
+```{r}
+isolates<-rep(c("A","B","C","D","E"),each=10)
+control<-rnorm(50, mean = 7.47, sd=0.716)
+low<-rnorm(50, mean=6.86, sd=1.50)
+medium<-rnorm(50, mean=6.91, sd=1.31)
+high<- rnorm(50, mean=6.59, sd=1.92)
+
+dframe3<- data.frame(isolates, control, low, medium, high)
+
+head(dframe3)
+dframe %>%
+  pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T) -> dframe4
+
+head(dframe4)
+
+one.way <- aov(logcfu ~ SanitizerConc, data=dframe4)
+summary(one.way)
+#I ran a posthoc analyses to determine significance within groups
+
+TukeyHSD(one.way)
+
+plot3<-ggplot(dframe4) +
+  geom_bar(aes(x = isolates, y = logcfu, fill = SanitizerConc ), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(plot3)
+
+```
+***the analyses turned out significant values and insignificant values in turn...***
+
+
+### Question Six  
+Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the “effect size”) for you to still detect a significant pattern (p < 0.05)?
+
+```{r}
+#now varying the means to determine effect sizes
+
+isolates<-rep(c("A","B","C","D","E"),each=10)
+control<-rnorm(50, mean = 6.47, sd=0.716) #adjusted the means to be closer to treatment values
+low<-rnorm(50, mean=6.86, sd=1.50)
+medium<-rnorm(50, mean=6.91, sd=1.31)
+high<- rnorm(50, mean=6.99, sd=1.92)# Adjusted the mean to be closer to the medium values
+
+dframe<- data.frame(isolates, control, low, medium, high)
+
+head(dframe)
+dframe %>%
+  pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T) -> dframe2
+
+head(dframe2)
+
+one.way <- aov(logcfu ~ SanitizerConc, data=dframe2)
+summary(one.way) #Null hypothesis was true with the adjusted means...
+
+plot1<-ggplot(dframe2) +
+  geom_bar(aes(x = isolates, y = logcfu, fill = SanitizerConc ), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(plot1)
+ 
+#I ran a posthoc analyses to determine significance within groups
+
+TukeyHSD(one.way)
+
+
+
+
+```
+
+```{r}
+#running the model a few times with the same parameters set to get a feeling for the effect of random variation in the data.
+
+isolates<-rep(c("A","B","C","D","E"),each=10)
+control<-rnorm(50, mean = 6.47, sd=0.716) #adjusted the means to be closer to treatment values
+low<-rnorm(50, mean=6.86, sd=1.50)
+medium<-rnorm(50, mean=6.91, sd=1.31)
+high<- rnorm(50, mean=6.99, sd=1.92)# Adjusted the mean to be closer to the medium values
+
+dframe<- data.frame(isolates, control, low, medium, high)
+
+head(dframe)
+dframe %>%
+  pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T) -> dframe2
+
+head(dframe2)
+
+one.way <- aov(logcfu ~ SanitizerConc, data=dframe2)
+summary(one.way)
+
+plot1<-ggplot(dframe2) +
+  geom_bar(aes(x = isolates, y = logcfu, fill = SanitizerConc ), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(plot1)
+
+TukeyHSD(one.way)
+```
+
+***one last run***
+
+```{r}
+
+isolates<-rep(c("A","B","C","D","E"),each=10)
+control<-rnorm(50, mean = 6.47, sd=0.716) #adjusted the means to be closer to treatment values
+low<-rnorm(50, mean=6.86, sd=1.50)
+medium<-rnorm(50, mean=6.91, sd=1.31)
+high<- rnorm(50, mean=6.99, sd=1.92)# Adjusted the mean to be closer to the medium values
+
+dframe<- data.frame(isolates, control, low, medium, high)
+
+head(dframe)
+dframe %>%
+  pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T) -> dframe2
+
+head(dframe2)
+
+one.way <- aov(logcfu ~ SanitizerConc, data=dframe2)
+summary(one.way)
+
+plot1<-ggplot(dframe2) +
+  geom_bar(aes(x = isolates, y = logcfu, fill = SanitizerConc ), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(plot1)
+
+TukeyHSD(one.way)
+
+```

@@ -21,7 +21,16 @@ output: html_document
 
 5. [new page](Homework6.html)  Homework 6: Tidyverse, dplyr
 
-6. [new page](Homework7.html)  Homework 7: Simulating and fitting data distributions
+6. [new page](Homework7.html)  Homework 7: Simulating and fitting data distributions  
+
+7. [new page](Homework8.html) Homework 8: Creating fake data sets to explore hypothesis
+
+8. [new page](Homework9.html) Homework 9: Organizing Code with Structured Programming
+
+9. 
+
+10. [new page](Homework11.html) Homework 11: Batch Processing
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

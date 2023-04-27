@@ -1,0 +1,187 @@
+---
+title: 'Homework9: Organizing Code with Structured Programming'
+author: "Eurydice Aboagye"
+date: "2023-04-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question 1  
+Use the code that you worked on in Homework #8 (creating fake data sets), and re-organize it following the principles of structured programming. Do all the work in a single chunk in your R markdown file, just as if you were writing a single R script. Start with all of your annotated functions, preliminary calls, and global variables. The program body should be only a few lines of code that call the appropriate functions and run them in the correct order. Make sure that the output from one function serves as the input to the next. You can either daisy-chain the functions or write separate lines of code to hold elements in temporary variables and pass them along.
+
+```{r}
+
+# Call Libraries -------------------------
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+
+
+# Global Variables -------------------------
+z<- "BiofilmCounts.csv"
+d <- read.table(z, header=TRUE,sep=",")
+d <- d[complete.cases(d), ]
+d <-select(d, Treatment, SanitizerType, SanitizerConc, logcfu)
+isolates<-rep(c("A","B","C","D","E"),each=10)
+
+# Functions -------------------------
+
+######################################
+# FUNCTION: tidy_data
+# packages: tidyverse
+# purpose:generates mean and variances of outcome variable
+# input: data frame with named variables of interest
+# output: a Tibble grouped according to predictor variable
+# -------------------------------------
+tidy_data <- function(d) {
+  d_org<-d%>%
+    group_by(SanitizerConc)%>%
+    summarise(Average=mean(logcfu), variance=var(logcfu),n=n())
+  return(as.data.frame(d_org))
+    }
+
+d_org<- tidy_data(d=d) 
+
+
+#######################################
+# FUNCTION: sim_data
+# packages: tidyverse
+# purpose:Simulates random uniform dataset
+# input: output of tidy_data
+# output: dataframe that simulates original data set
+# -------------------------------------
+sim_data <- function(d){
+  dframe<-data.frame(iso=isolates, 
+            control=rnorm(50, d_org$Average[1], d_org$variance[1]),
+              low=rnorm(50, d_org$Average[2], d_org$variance[2]),
+            medium=rnorm(50, d_org$Average[3], d_org$variance[3]),
+            high=rnorm(50, d_org$Average[4], d_org$variance[4]))
+  #created df called dframe
+  
+   x<-dframe%>%
+    pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T)
+  return(x)
+  }
+  
+sim_data(d=d_org)
+x<- sim_data(d=d_org)
+#######################################
+# FUNCTION: run_stats
+# packages: tidyverse
+# purpose: runs anova
+# input: Output of sim_data function
+# output:
+# -------------------------------------
+run_stats <- function(d) {
+  one.way<- aov(logcfu ~ SanitizerConc, data=d)
+  return(summary(one.way))
+  
+  }
+ 
+run_stats(d=x) 
+
+#######################################
+# FUNCTION: Plot_graphs
+# packages: none
+# purpose: plots bar graphs
+# input: output of sim_data
+# output: Grouped bar graphs
+# -------------------------------------
+Plot_graphs <- function(d) {
+  graph<- ggplot(d) +
+    geom_bar(aes(x = iso, y = logcfu, fill = SanitizerConc ), stat = "identity", position = "dodge") +
+    theme_minimal() 
+  return(print(graph))
+  
+  }
+Plot_graphs(d=x)  
+
+
+# Program Body -------------------------
+
+tidy_data(d=d)
+x<- tidy_data(d=d) # saving the output of tidy_data into a variable x
+
+sim_data(d=x)
+y<-sim_data(d=d_org) # saving the output of sim_data into a variable y
+
+run_stats(y)
+
+Plot_graphs(y)
+
+```
+
+### Question Two  
+Once your code is up and working, modify your program to do something else: record a new summary variable, code a new statistical analysis, or create a different set of random variables or output graph. Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. Once your new functions are written, add some more lines of program code, calling a mixture of your previous functions and your new functions to get the job done.
+
+```{r}
+
+# FUNCTION: tidy_data
+# packages: tidyverse
+# purpose:generates mean and variances of outcome variable
+# input: data frame with named variables of interest
+# output: a Tibble grouped according to predictor variable
+# -------------------------------------
+tidy_data <- function(d) {
+  d_org<-d%>%
+    group_by(SanitizerConc)%>%
+    summarise(Average=mean(logcfu), variance=var(logcfu),n=n())
+  return(as.data.frame(d_org))
+    }
+
+d_org<- tidy_data(d=d) 
+
+
+#######################################
+# FUNCTION: sim_data
+# packages: tidyverse
+# purpose:Simulates random uniform dataset
+# input: output of tidy_data
+# output: dataframe that simulates original data set
+# -------------------------------------
+sim_data <- function(d){
+  dframe<-data.frame(iso=isolates, 
+            control=rnorm(100, d_org$Average[1], d_org$variance[1]),
+              low=rnorm(100, d_org$Average[2], d_org$variance[2]),
+            medium=rnorm(100, d_org$Average[3], d_org$variance[3]),
+            high=rnorm(100, d_org$Average[4], d_org$variance[4]))
+  #modified to create a larger set of random variables
+  
+   x<-dframe%>%
+    pivot_longer(cols= control:high, names_to = "SanitizerConc", values_to = "logcfu", values_drop_na=T)
+  return(x)
+  }
+  
+sim_data(d=d_org)
+x<- sim_data(d=d_org)
+#######################################
+# FUNCTION: run_stats
+# packages: tidyverse
+# purpose: runs anova
+# input: Output of sim_data function
+# output:
+# -------------------------------------
+run_stats <- function(d) {
+  two.way<- aov(logcfu ~ SanitizerConc + iso, data=d)
+  return(summary(two.way))
+  
+  } # modified to perform a two-way anova
+ 
+run_stats(d=x) 
+
+#######################################
+# FUNCTION: Plot_graphs
+# packages: none
+# purpose: plots bar graphs
+# input: output of sim_data
+# output: Grouped bar graphs
+# -------------------------------------
+Plot_graphs <- function(d) {
+  graph<- ggplot(data = x, aes(x=iso, y=logcfu)) + geom_line(aes(colour=SanitizerConc)) 
+  return(print(graph))
+  
+  } #modified to plot a line graph
+Plot_graphs(d=x)
