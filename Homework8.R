@@ -12,7 +12,7 @@ z1<-select(z, Treatment, SanitizerType, SanitizerConc, logcfu)
 
 
 z1 %>%
-  group_by(SanitizerConc)%>%
+  group_by(z1[,3])%>%
   summarise(AverageCfu=mean(logcfu), variance=var(logcfu), n=n()) ->z2
 print(z2)
 

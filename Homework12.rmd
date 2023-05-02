@@ -1,0 +1,131 @@
+---
+title: 'Homework12: Advanced ggploting'
+author: "Eurydice Aboagye"
+date: "2023-05-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Question  
+For this exercise, use your newly-developed ggplot chops to create some nice graphs from your own data (If you do not have a good data frame to use for graphics, use one of the many built-in data frames from R (other than mpg, which we are using in class)). Experiment with different themes, theme base sizes, aesthetics, mappings, and faceting. When you are finished, try exporting them to high quality pdfs, jpgs, eps files, or other formats that you would use for submission to a journal.
+
+```{r}
+library(ggplot2)
+library(ggthemes)
+library(tidyverse)
+
+d<- as.data.frame(UCBAdmissions)# chose to use built-in R dataframes
+head(d) 
+
+# i think this data set is best represented by a group bar charts
+
+# I first looked at Admissions by gender
+groupbar <- ggplot(d) +
+  geom_bar(aes(x = Gender, y = Freq, fill = Admit), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(groupbar)
+
+```
+
+This time i grouped the bars according to admissions
+
+```{r}
+groupbar2 <- ggplot(d) +
+  geom_bar(aes(x = Admit, y = Freq, fill = Gender), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(groupbar2)
+```
+
+I then decided to just look at rejection rates by gender
+
+```{r}
+# I then decided to just look at rejection rates by gender
+
+d1<-filter(d, Admit=="Rejected")
+d1<-as.data.frame(d1)
+print(d1)
+
+d2<-filter(d, Admit=="Admitted")
+d2<- as.data.frame(d2)
+print(d2) # I also looked at admission rates within departments by gender 
+
+```
+
+```{r}
+
+groupbar3 <- ggplot(d1) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Gender), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(groupbar3)
+
+groupbar4 <- ggplot(d2) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Gender), stat = "identity", position = "dodge") +
+  theme_minimal() 
+print(groupbar4)
+
+```
+
+I then decided to present these two charts side by side and added a chart title
+```{r}
+groupbar5 <- ggplot(d) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Gender), stat = "identity", position = "dodge") + ggtitle("Gender Disparities in Departmental Admissions at UCB") + facet_wrap(~Admit) + theme_minimal() 
+print(groupbar5)
+
+```
+
+I then changed things up so the grouping is done by admission, rather than by gender...
+```{r}
+groupbar6 <- ggplot(d) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Admit), stat = "identity", position = "dodge") + ggtitle("Gender Disparities in Departmental Admissions at UCB") + facet_wrap(~Gender) + theme_minimal() 
+print(groupbar6)
+
+```
+
+I then changed the orientation to display the chart horizontally
+
+```{r}
+groupbar7 <- ggplot(d) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Admit), stat = "identity", position = "dodge") + ggtitle("Gender Disparities in Departmental Admissions at UCB") + facet_wrap(~Gender) + theme_minimal() + coord_flip() 
+print(groupbar7)
+```
+
+Using Colour Brewer to modify colours
+```{r}
+groupbar8 <- ggplot(d2) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Gender), stat = "identity", position = "dodge") + scale_fill_brewer(palette = "Set1") + theme_minimal()
+
+print(groupbar8)
+
+```
+
+Using grey-scale
+
+```{r}
+groupbar9 <- ggplot(d2) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Gender), stat = "identity", position = "dodge") + scale_fill_grey(start = 0.25, end = 0.75) + theme_minimal()
+
+print(groupbar9)
+
+```
+
+Selecting my own colours
+```{r}
+groupbar10 <- ggplot(d2) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Gender), stat = "identity", position = "dodge") + scale_fill_manual(values = c("brown", "blue") ) +
+ theme_minimal()
+print(groupbar10)
+
+````
+
+Removing gridlines
+```{r}
+#Removing Grid lines
+groupbar11 <- ggplot(d2) +
+  geom_bar(aes(x = Dept, y = Freq, fill = Gender), stat = "identity", position = "dodge") + scale_fill_manual(values = c("brown", "blue") ) +
+ theme_minimal() + theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank())
+print(groupbar11)

@@ -91,5 +91,5 @@ Plot_graphs <- function(d) {
 Plot_graphs(d=x)  
 
 
-  
+ggplot(data = x, aes(x=iso, y=logcfu)) + geom_line(aes(colour=SanitizerConc))  
   

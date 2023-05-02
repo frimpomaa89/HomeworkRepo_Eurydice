@@ -27,10 +27,11 @@ output: html_document
 
 8. [new page](Homework9.html) Homework 9: Organizing Code with Structured Programming
 
-9. 
+9.  [new page](Homework10.html) Homework 10: For Loops and Randomization Tests
 
 10. [new page](Homework11.html) Homework 11: Batch Processing
 
+11. [new page](Homework12.html) Homework 12: Advanced ggploting
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

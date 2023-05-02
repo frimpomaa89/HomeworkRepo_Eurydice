@@ -175,7 +175,7 @@ run_stats(d=x)
 #######################################
 # FUNCTION: Plot_graphs
 # packages: none
-# purpose: plots bar graphs
+# purpose: plots line graphs
 # input: output of sim_data
 # output: Grouped bar graphs
 # -------------------------------------
